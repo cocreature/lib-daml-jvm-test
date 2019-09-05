@@ -109,7 +109,7 @@ public class PackageUtils {
         String choiceArgName = choiceArgEntry.getKey();
         DamlLf1.Type choiceArgType = choiceArgEntry.getValue();
         String choiceDataTypeName = dottedNameToString(choiceArgType.getCon().getTycon().getName());
-        String choiceDataTypeFqn = toFqn(moduleName, choiceDataTypeName);
+        String choiceDataTypeFqn = toFullyQualifiedName(moduleName, choiceDataTypeName);
         if (choiceArgName.equals("Archive") || choiceDataTypeName.equals("Archive")) {
           choiceDataTypeFqn = "DAInternalTemplate:Archive";
         }
@@ -126,11 +126,7 @@ public class PackageUtils {
   }
 
   public static String dottedNameToString(DamlLf1.DottedName name) {
-    StringBuilder b = new StringBuilder();
-    for (int i = 0; i < name.getSegmentsCount(); i++) {
-      b.append(name.getSegments(i));
-    }
-    return b.toString();
+    return String.join(".", name.getSegmentsList());
   }
 
   private static DataType findDataType(DamlLedgerClient ledgerClient, String moduleAndEntityName)
