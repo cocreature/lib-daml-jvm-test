@@ -161,7 +161,7 @@ public class PackageUtils {
         for (DamlLf1.DefDataType dataType : mod.getDataTypesList()) {
           String modN = dottedNameToString(mod.getName());
           String dataN = dottedNameToString(dataType.getName());
-          String moduleAndEntityName = toFqn(modN, dataN);
+          String moduleAndEntityName = toFullyQualifiedName(modN, dataN);
           Identifier id = new Identifier(pkgId, modN, dataN);
           identifiers.put(moduleAndEntityName, id);
           dataTypes.put(moduleAndEntityName, new DataType(mod, dataType));
@@ -170,7 +170,7 @@ public class PackageUtils {
     }
   }
 
-  private static String toFqn(String moduleName, String entityName) {
+  private static String toFullyQualifiedName(String moduleName, String entityName) {
     Objects.requireNonNull(moduleName);
     Objects.requireNonNull(entityName);
     assert !moduleName.isEmpty() && !entityName.isEmpty();
