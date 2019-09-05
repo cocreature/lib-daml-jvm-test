@@ -162,6 +162,18 @@ public class LedgerInteractions implements En {
                       idWithArgs.identifier, "{CAPTURE:" + contractId + "}", args));
         });
     Then(
+        "^.*\"([^\"]+)\" should observe the creation of \"([^\"]+)\" with contract id \"([^\"]+)\"$",
+        (String party, String moduleAndEntityName, String contractId) -> {
+          PackageUtils.TemplateType idWithArgs =
+              findTemplate(sandboxManager.getClient(), moduleAndEntityName);
+          sandboxManager
+              .getLedgerAdapter()
+              .observeEvent(
+                  party,
+                  ContractCreated.expectContract(
+                      idWithArgs.identifier, "{CAPTURE:" + contractId + "}"));
+        });
+    Then(
         "^.*\"([^\"]+)\" should observe the archival of \"([^\"]+)\" with contract id \"([^\"]+)\".*$",
         (String party, String moduleAndEntityName, String contractIdKey) -> {
           PackageUtils.TemplateType idWithArgs =
