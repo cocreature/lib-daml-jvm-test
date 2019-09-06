@@ -108,10 +108,13 @@ public class PackageUtils {
           dt.getTemplateChoices().get().entrySet()) {
         String choiceArgName = choiceArgEntry.getKey();
         DamlLf1.Type choiceArgType = choiceArgEntry.getValue();
-        String choiceDataTypeName = dottedNameToString(choiceArgType.getCon().getTycon().getName());
-        String choiceDataTypeFqn = toFullyQualifiedName(moduleName, choiceDataTypeName);
-        if (choiceArgName.equals("Archive") || choiceDataTypeName.equals("Archive")) {
-          choiceDataTypeFqn = "DAInternalTemplate:Archive";
+        String choiceDataTypeFqn;
+        if (choiceArgName.equals("Archive")) {
+          choiceDataTypeFqn = "DA.Internal.Template:Archive";
+        } else {
+          String choiceDataTypeName =
+              dottedNameToString(choiceArgType.getCon().getTycon().getName());
+          choiceDataTypeFqn = toFullyQualifiedName(moduleName, choiceDataTypeName);
         }
         DataType choiceArgDataType = findDataType(ledgerClient, choiceDataTypeFqn);
         if (choiceArgDataType.hasFields()) {
