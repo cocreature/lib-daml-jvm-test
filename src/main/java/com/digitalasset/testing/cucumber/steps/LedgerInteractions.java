@@ -60,6 +60,21 @@ public class LedgerInteractions implements En {
                   (client) -> {});
           sandboxManager.start(config.getSandboxPort());
         });
+    // TODO: Consider refactoring to reduce duplication.
+    Given(
+        "^Sandbox is started running scenario \"([a-zA-Z]+):([a-zA-Z]+)\" with DAR \"([^\"]+)\" and the following parties$",
+        (String module, String scenario, String darPath, DataTable dataTable) -> {
+          String[] parties = dataTable.asList().toArray(new String[] {});
+          sandboxManager =
+              new SandboxManager(
+                  Optional.ofNullable(module),
+                  Optional.ofNullable(scenario),
+                  Duration.ofSeconds(30),
+                  parties,
+                  Paths.get(darPath),
+                  (client) -> {});
+          sandboxManager.start(config.getSandboxPort());
+        });
     After(
         () -> {
           if (sandboxManager != null) {
