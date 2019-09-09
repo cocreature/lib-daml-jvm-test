@@ -189,6 +189,17 @@ public class LedgerInteractions implements En {
                       idWithArgs.identifier, "{CAPTURE:" + contractId + "}"));
         });
     Then(
+        "^.*\"([^\"]+)\" should observe (\\d+) number of creation of \"([^\"]+)\"$",
+        (String party, Integer numberOfContracts, String moduleAndEntityName) -> {
+          PackageUtils.TemplateType idWithArgs =
+              findTemplate(sandboxManager.getClient(), moduleAndEntityName);
+          for (int i = 0; i < numberOfContracts; i++) {
+            sandboxManager
+                .getLedgerAdapter()
+                .getCreatedContractId(party(party), idWithArgs.identifier, ContractId::new);
+          }
+        });
+    Then(
         "^.*\"([^\"]+)\" should observe the archival of \"([^\"]+)\" with contract id \"([^\"]+)\".*$",
         (String party, String moduleAndEntityName, String contractIdKey) -> {
           PackageUtils.TemplateType idWithArgs =
